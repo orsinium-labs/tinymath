@@ -1,4 +1,4 @@
-package micromath
+package tinymath
 
 // Computes `acos(x)` approximation in radians in the range `[0, pi]`.
 func Acos(self float32) float32 {

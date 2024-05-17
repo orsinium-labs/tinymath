@@ -1,4 +1,4 @@
-package micromath
+package tinymath
 
 import "math"
 
@@ -17,9 +17,9 @@ const (
 )
 
 var (
-	NAN          float32 = float32(math.NaN())
-	INFINITY     float32 = float32(math.Inf(1))
-	NEG_INFINITY float32 = float32(math.Inf(-1))
+	NaN    float32 = float32(math.NaN())
+	Inf    float32 = float32(math.Inf(1))
+	NegInf float32 = float32(math.Inf(-1))
 )
 
 func ToBits(x float32) uint32 {
@@ -108,7 +108,7 @@ func ExpLn2Approx(self float32, partial_iter uint32) float32 {
 	}
 
 	if fract_exponent > (EXPONENT_BIAS + 1) {
-		return INFINITY
+		return Inf
 	}
 
 	return setExponent(fract_exp, fract_exponent)
@@ -279,7 +279,7 @@ func Powf(self float32, n float32) float32 {
 	if self >= 0.0 {
 		return Exp(n * Ln(self))
 	} else if IsInteger(n) {
-		return NAN
+		return NaN
 	} else if IsEven(n) {
 		// if n is even, then we know that the result will have no sign, so we can remove it
 		return n * Exp(Ln(withoutSign(self)))
@@ -319,9 +319,9 @@ func Powi(self float32, n int32) float32 {
 		const min_representable_exponent = -126 - MANTISSA_BITS
 		if approx_final_exponent > max_representable_exponent || (self == 0.0 && approx_final_exponent < 0) {
 			if IsSignPositive(self) || n&1 == 0 {
-				return INFINITY
+				return Inf
 			} else {
-				return NEG_INFINITY
+				return NegInf
 			}
 		} else if approx_final_exponent < min_representable_exponent {
 			// We may want to copy the sign and do the same thing as above,
@@ -380,7 +380,7 @@ func Round(self float32) float32 {
 // * `NAN` if the number is `NAN`
 func Signum(self float32) float32 {
 	if IsNaN(self) {
-		return NAN
+		return NaN
 	} else {
 		return CopySign(1.0, self)
 	}
@@ -393,7 +393,7 @@ func Sqrt(self float32) float32 {
 	if self >= 0.0 {
 		return FromBits((ToBits(self) + 0x3f80_0000) >> 1)
 	} else {
-		return NAN
+		return NaN
 	}
 }
 
