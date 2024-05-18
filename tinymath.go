@@ -265,7 +265,7 @@ func MulAdd(self float32, a float32, b float32) float32 {
 }
 
 // Approximates a number raised to a floating point power.
-func Powf(self float32, n float32) float32 {
+func PowF(self float32, n float32) float32 {
 	// using x^n = exp(ln(x^n)) = exp(n*ln(x))
 	if self >= 0.0 {
 		return Exp(n * Ln(self))
@@ -281,7 +281,7 @@ func Powf(self float32, n float32) float32 {
 }
 
 // Approximates a number raised to an integer power.
-func Powi(self float32, n int32) float32 {
+func PowI(self float32, n int32) float32 {
 	base := self
 	abs_n := n
 	if n < 0 {

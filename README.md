@@ -19,3 +19,18 @@ go get github.com/orsinium-labs/tinymath
 ```go
 fmt.Println(tinymath.Sin(tinymath.Pi))
 ```
+
+## Size
+
+Here is a comparison of WebAssembly binary size (built with TinyGo) when using tinymath vs stdlib math:
+
+| function     | tinymath | stdlib | ratio |
+| ------------ | --------:| ------:| ----- |
+| atan2        |      167 |    782 |   21% |
+| exp          |      539 |   2722 |   19% |
+| hypot        |      146 |    203 |   71% |
+| ln           |      196 |   4892 |    4% |
+| powf         |      873 |   9167 |    9% |
+| sin          |      198 |   1237 |   16% |
+
+To reproduce: `python3 size_bench.py`

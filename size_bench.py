@@ -27,12 +27,17 @@ def get_size(path: Path) -> int:
     return size
 
 
-print('| function     | tinymath | stdlib | ratio |')
-print('| ------------ | -------- | ------ | ----- |')
-root = Path(__file__).parent / 'size_bench'
-for tiny_path in (root / 'tiny').iterdir():
-    std_path = root / 'std' / tiny_path.name
-    tiny_size = get_size(tiny_path)
-    std_size = get_size(std_path)
-    ratio = int(tiny_size / std_size * 100)
-    print(f'| {tiny_path.stem:12} | {tiny_size:>8} | {std_size:>6} | {ratio:>4}% |')  # noqa: E501
+def main():
+    print('| function     | tinymath | stdlib | ratio |')
+    print('| ------------ | --------:| ------:| ----- |')
+    root = Path(__file__).parent / 'size_bench'
+    for tiny_path in sorted((root / 'tiny').iterdir()):
+        std_path = root / 'std' / tiny_path.name
+        tiny_size = get_size(tiny_path)
+        std_size = get_size(std_path)
+        ratio = int(tiny_size / std_size * 100)
+        print(f'| {tiny_path.stem:12} | {tiny_size:>8} | {std_size:>6} | {ratio:>4}% |')  # noqa: E501
+
+
+if __name__ == '__main__':
+    main()
