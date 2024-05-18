@@ -27,11 +27,11 @@ Here is a comparison of WebAssembly binary size (built with TinyGo) when using t
 | function     | tinymath | stdlib | ratio |
 | ------------ | --------:| ------:| ----- |
 | atan2        |      167 |    782 |   21% |
-| exp          |      489 |   2722 |   17% |
-| fract        |      166 |    154 |  107% |
+| exp          |      535 |   2722 |   19% |
+| fract        |      206 |    154 |  133% |
 | hypot        |       94 |    203 |   46% |
 | ln           |      196 |   4892 |    4% |
-| powf         |      813 |   9167 |    8% |
+| powf         |      859 |   9167 |    9% |
 | round        |      129 |    171 |   75% |
 | sin          |      198 |   1237 |   16% |
 | trunc        |      136 |     57 |  238% |

@@ -41,3 +41,12 @@ func Trunc(self float32) float32 {
 	fractional_mask := fractional_part >> exponent_clamped
 	return FromBits(x_bits & ^fractional_mask)
 }
+
+func leadingZeros(x uint32) uint32 {
+	var n uint32 = 32
+	for x != 0 {
+		x >>= 1
+		n -= 1
+	}
+	return n
+}

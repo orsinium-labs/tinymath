@@ -1,9 +1,6 @@
 package tinymath
 
-import (
-	"math/bits"
-	"unsafe"
-)
+import "unsafe"
 
 const (
 	signMask     uint32 = 0x8000_0000
@@ -144,10 +141,6 @@ func Fract(self float32) float32 {
 	new_exponent_bits := (expBias - (exponent_shift)) << mantissaBits
 
 	return CopySign(FromBits(fractional_normalized|new_exponent_bits), self)
-}
-
-func leadingZeros(x uint32) uint32 {
-	return uint32(bits.LeadingZeros32(x))
 }
 
 // Calculate the length of the hypotenuse of a right-angle triangle.
