@@ -38,6 +38,7 @@ func close(t *testing.T, act, exp float32, eps float32) {
 }
 
 func TestAbs(t *testing.T) {
+	t.Parallel()
 	cases := []Case{
 		{0.0, 0.0},
 		{0.1, 0.1},
@@ -58,6 +59,7 @@ func TestAbs(t *testing.T) {
 }
 
 func TestCeil(t *testing.T) {
+	t.Parallel()
 	cases := []Case{
 		{-1.1, -1.0},
 		{-0.1, 0.0},
@@ -75,6 +77,7 @@ func TestCeil(t *testing.T) {
 }
 
 func TestCopySign(t *testing.T) {
+	t.Parallel()
 	const large = 100_000_000.13425345345
 	cases := []Case2{
 		{-1.0, -1.0, -1.0},
@@ -95,6 +98,7 @@ func TestCopySign(t *testing.T) {
 }
 
 func TestDivEuclid(t *testing.T) {
+	t.Parallel()
 	cases := []Case2{
 		{7., 4., 1.},
 		{-7., 4., -2.},
@@ -110,6 +114,7 @@ func TestDivEuclid(t *testing.T) {
 }
 
 func TestExp(t *testing.T) {
+	t.Parallel()
 	cases := []Case{
 		{1e-07, 1.0000001},
 		{1e-06, 1.000001},
@@ -140,6 +145,7 @@ func TestExp(t *testing.T) {
 }
 
 func TestFloor(t *testing.T) {
+	t.Parallel()
 	cases := []Case{
 		{-1.1, -2.0},
 		{-0.1, -1.0},
@@ -157,6 +163,7 @@ func TestFloor(t *testing.T) {
 }
 
 func TestFract(t *testing.T) {
+	t.Parallel()
 	cases := []Case{
 		{tinymath.Fract(2.9) + 2.0, 2.9},
 		{tinymath.Fract(-1.1) - 1.0, -1.1},
@@ -176,6 +183,7 @@ func TestFract(t *testing.T) {
 }
 
 func TestHypot(t *testing.T) {
+	t.Parallel()
 	cases := []Case2{
 		{2., 3., tinymath.Sqrt(13.)},
 		{3., 4., tinymath.Sqrt(25.)},
@@ -190,6 +198,7 @@ func TestHypot(t *testing.T) {
 }
 
 func TestInv(t *testing.T) {
+	t.Parallel()
 	for i := float32(1.); i < 100.; i++ {
 		i := i
 		t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
@@ -200,6 +209,7 @@ func TestInv(t *testing.T) {
 }
 
 func TestInvSqrt(t *testing.T) {
+	t.Parallel()
 	for i := float32(1.); i < 100.; i++ {
 		i := i
 		t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
@@ -210,6 +220,7 @@ func TestInvSqrt(t *testing.T) {
 }
 
 func TestSqrt(t *testing.T) {
+	t.Parallel()
 	cases := []Case{
 		{1.0, 1.0},
 		// {2.0, 1.414},
@@ -247,6 +258,7 @@ func TestSqrt(t *testing.T) {
 }
 
 func TestLn(t *testing.T) {
+	t.Parallel()
 	cases := []Case{
 		{1e-20, -46.0517},
 		{1e-19, -43.749115},
@@ -314,6 +326,7 @@ func TestLn(t *testing.T) {
 }
 
 func TestLog(t *testing.T) {
+	t.Parallel()
 	cases := []Case2{
 		{1e-20, 3, -41.918_064},
 		{1e-19, 3, -39.822_16},
@@ -455,6 +468,142 @@ func TestLog(t *testing.T) {
 			i := i
 			t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
 				close(t, tinymath.Log(i, 10.), float32(math.Log10(float64(i))), 0.001)
+			})
+		}
+	})
+}
+
+func TestLog2(t *testing.T) {
+	t.Parallel()
+	cases := []Case{
+		{1e-20, -66.43856},
+		{1e-19, -63.116634},
+		{1e-18, -59.794704},
+		{1e-17, -56.47278},
+		{1e-16, -53.15085},
+		{1e-15, -49.828922},
+		{1e-14, -46.506992},
+		{1e-13, -43.185066},
+		{1e-12, -39.863136},
+		{1e-11, -36.54121},
+		{1e-10, -33.21928},
+		{1e-09, -29.897352},
+		{1e-08, -26.575424},
+		{1e-07, -23.253496},
+		{1e-06, -19.931568},
+		{1e-05, -16.60964},
+		{1e-04, -13.287712},
+		{0.001, -9.965784},
+		{0.01, -6.643856},
+		{0.1, -3.321928},
+		{10.0, 3.321928},
+		{100.0, 6.643856},
+		{1000.0, 9.965784},
+		{10000.0, 13.287712},
+		{100000.0, 16.60964},
+		{1000000.0, 19.931568},
+		{10000000.0, 23.253496},
+		{100000000.0, 26.575424},
+		{1000000000.0, 29.897352},
+		{10000000000.0, 33.21928},
+		{100000000000.0, 36.54121},
+		{1000000000000.0, 39.863136},
+		{10000000000000.0, 43.185066},
+		{100000000000000.0, 46.506992},
+		{1000000000000000.0, 49.828922},
+		{1e+16, 53.15085},
+		{1e+17, 56.47278},
+		{1e+18, 59.794704},
+		{1e+19, 63.116634},
+	}
+	t.Run("table", func(t *testing.T) {
+		t.Parallel()
+		for _, c := range cases {
+			c := c
+			t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+				act := tinymath.Log2(c.Given)
+				delta := tinymath.Abs(act - c.Expected)
+				if delta/c.Expected > 0.001 {
+					t.Fatalf("%f != %f", act, c.Expected)
+				}
+			})
+		}
+	})
+
+	t.Run("stdlib", func(t *testing.T) {
+		t.Parallel()
+		for i := float32(1.); i < 100.; i++ {
+			i := i
+			t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
+				close(t, tinymath.Log2(i), float32(math.Log2(float64(i))), 0.001)
+			})
+		}
+	})
+}
+
+func TestLog10(t *testing.T) {
+	t.Parallel()
+	cases := []Case{
+		{1e-20, -20.0},
+		{1e-19, -19.0},
+		{1e-18, -18.0},
+		{1e-17, -17.0},
+		{1e-16, -16.0},
+		{1e-15, -15.0},
+		{1e-14, -14.0},
+		{1e-13, -13.0},
+		{1e-12, -12.0},
+		{1e-11, -11.0},
+		{1e-10, -10.0},
+		{1e-09, -9.0},
+		{1e-08, -8.0},
+		{1e-07, -7.0},
+		{1e-06, -6.0},
+		{1e-05, -5.0},
+		{1e-04, -4.0},
+		{0.001, -3.0},
+		{0.01, -2.0},
+		{0.1, -1.0},
+		{10.0, 1.0},
+		{100.0, 2.0},
+		{1000.0, 3.0},
+		{10000.0, 4.0},
+		{100000.0, 5.0},
+		{1000000.0, 6.0},
+		{10000000.0, 7.0},
+		{100000000.0, 8.0},
+		{1000000000.0, 9.0},
+		{10000000000.0, 10.0},
+		{100000000000.0, 11.0},
+		{1000000000000.0, 12.0},
+		{10000000000000.0, 13.0},
+		{100000000000000.0, 14.0},
+		{1000000000000000.0, 15.0},
+		{1e+16, 16.0},
+		{1e+17, 17.0},
+		{1e+18, 18.0},
+		{1e+19, 19.0},
+	}
+	t.Run("table", func(t *testing.T) {
+		t.Parallel()
+		for _, c := range cases {
+			c := c
+			t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+				act := tinymath.Log10(c.Given)
+				delta := tinymath.Abs(act - c.Expected)
+				if delta/c.Expected > 0.001 {
+					t.Fatalf("%f != %f", act, c.Expected)
+				}
+			})
+		}
+	})
+
+	t.Run("stdlib", func(t *testing.T) {
+		t.Parallel()
+		for i := float32(1.); i < 100.; i++ {
+			i := i
+			t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
+				close(t, tinymath.Log10(i), float32(math.Log10(float64(i))), 0.001)
 			})
 		}
 	})
