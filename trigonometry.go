@@ -30,7 +30,7 @@ func AtanNorm(self float32) float32 {
 	const B = 0.596_227
 
 	// Extract the sign bit
-	ux_s := SIGN_MASK & ToBits(self)
+	ux_s := signMask & ToBits(self)
 
 	// Calculate the arctangent in the first quadrant
 	bx_a := Abs(B * self)
@@ -63,8 +63,8 @@ func Atan2Norm(y float32, x float32) float32 {
 	const B = 0.596_227
 
 	// Extract sign bits from floating point values
-	ux_s := SIGN_MASK & ToBits(x)
-	uy_s := SIGN_MASK & ToBits(y)
+	ux_s := signMask & ToBits(x)
+	uy_s := signMask & ToBits(y)
 
 	// Determine quadrant offset
 	q := float32((^ux_s&uy_s)>>29 | ux_s>>30)

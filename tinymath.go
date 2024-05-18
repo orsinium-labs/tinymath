@@ -6,11 +6,10 @@ import (
 )
 
 const (
-	SIGN_MASK uint32 = 0x8000_0000
-
-	MANTISSA_BITS        = 23
-	EXPONENT_MASK uint32 = 0b0111_1111_1000_0000_0000_0000_0000_0000
-	EXPONENT_BIAS        = 127
+	signMask     uint32 = 0x8000_0000
+	mantissaBits        = 23
+	expMask      uint32 = 0b0111_1111_1000_0000_0000_0000_0000_0000
+	expBias             = 127
 )
 
 func ToBits(x float32) uint32 {
@@ -39,15 +38,15 @@ func Min[N float32 | int32](a, b N) N {
 // /
 // Returns [`NAN`] if the number is [`NAN`].
 func Abs(self float32) float32 {
-	return FromBits(ToBits(self) & ^SIGN_MASK)
+	return FromBits(ToBits(self) & ^signMask)
 }
 
 // Returns a number composed of the magnitude of `self` and the sign of
 // `sign`.
 func CopySign(self float32, sign float32) float32 {
 	source_bits := ToBits(sign)
-	source_sign := source_bits & SIGN_MASK
-	signless_destination_bits := ToBits(self) & ^SIGN_MASK
+	source_sign := source_bits & signMask
+	signless_destination_bits := ToBits(self) & ^signMask
 	return FromBits(signless_destination_bits | source_sign)
 }
 
@@ -89,11 +88,11 @@ func ExpLn2Approx(self float32, partial_iter uint32) float32 {
 	//need the 2^n portion, we can just extract that from the whole number exp portion
 	fract_exponent := saturatingAdd(extractExponentValue(fract_exp), int32(x_trunc))
 
-	if fract_exponent < -(EXPONENT_BIAS) {
+	if fract_exponent < -expBias {
 		return 0.0
 	}
 
-	if fract_exponent > (EXPONENT_BIAS + 1) {
+	if fract_exponent > expBias+1 {
 		return Inf
 	}
 
@@ -138,11 +137,11 @@ func Fract(self float32) float32 {
 
 	// Note: alternatively this could use -1.0, but it's assumed subtraction would be more costly
 	// example: 'new_exponent_bits := 127.overflowing_shl(23))) - 1.0'
-	exponent_shift := (leadingZeros(fractional_part) - (32 - MANTISSA_BITS)) + 1
+	exponent_shift := (leadingZeros(fractional_part) - (32 - mantissaBits)) + 1
 
 	fractional_normalized := (fractional_part << exponent_shift) & MANTISSA_MASK
 
-	new_exponent_bits := (EXPONENT_BIAS - (exponent_shift)) << MANTISSA_BITS
+	new_exponent_bits := (expBias - (exponent_shift)) << mantissaBits
 
 	return CopySign(FromBits(fractional_normalized|new_exponent_bits), self)
 }
@@ -209,7 +208,7 @@ func Ln(self float32) float32 {
 	// according to the SO post ln(x) = ln((2^n)*y)= ln(2^n) + ln(y) = ln(2) * n + ln(y)
 	// get exponent value
 	base2_exponent := uint32(extractExponentValue(x_working))
-	divisor := FromBits(ToBits(x_working) & EXPONENT_MASK)
+	divisor := FromBits(ToBits(x_working) & expMask)
 
 	// supposedly normalizing between 1.0 and 2.0
 	x_working = x_working / divisor
@@ -287,7 +286,7 @@ func PowI(self float32, n int32) float32 {
 		// then we end early
 		approx_final_exponent := extractExponentValue(self) * n
 		const max_representable_exponent = 127
-		const min_representable_exponent = -126 - MANTISSA_BITS
+		const min_representable_exponent = -126 - mantissaBits
 		if approx_final_exponent > max_representable_exponent || (self == 0.0 && approx_final_exponent < 0) {
 			if IsSignPositive(self) || n&1 == 0 {
 				return Inf
@@ -369,16 +368,16 @@ func Sqrt(self float32) float32 {
 }
 
 func extractExponentBits(self float32) uint32 {
-	return (ToBits(self) & EXPONENT_MASK) >> MANTISSA_BITS
+	return (ToBits(self) & expMask) >> mantissaBits
 }
 
 func extractExponentValue(self float32) int32 {
-	return int32(extractExponentBits(self)) - EXPONENT_BIAS
+	return int32(extractExponentBits(self)) - expBias
 }
 
 func setExponent(self float32, exponent int32) float32 {
-	without_exponent := ToBits(self) & ^EXPONENT_MASK
-	only_exponent := uint32(exponent+EXPONENT_BIAS) << MANTISSA_BITS
+	without_exponent := ToBits(self) & ^expMask
+	only_exponent := uint32(exponent+expBias) << mantissaBits
 	return FromBits(without_exponent | only_exponent)
 }
 
@@ -391,5 +390,5 @@ func saturatingAdd(a, b int32) int32 {
 }
 
 func withoutSign(self float32) float32 {
-	return FromBits(ToBits(self) & ^SIGN_MASK)
+	return FromBits(ToBits(self) & ^signMask)
 }
