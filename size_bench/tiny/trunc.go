@@ -8,7 +8,3 @@ import "github.com/orsinium-labs/tinymath"
 func Trunc(x float32) float32 {
 	return tinymath.Trunc(x)
 }
-
-func main() {
-	Trunc(10)
-}
