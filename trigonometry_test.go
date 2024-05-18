@@ -7,6 +7,30 @@ import (
 	"github.com/orsinium-labs/tinymath"
 )
 
+func TestAcos(t *testing.T) {
+	cases := []Case{
+		{2.000, tinymath.NaN},
+		{1.000, 0.0},
+		{0.866, tinymath.FRAC_PI_6},
+		{0.707, tinymath.FRAC_PI_4},
+		{0.500, tinymath.FRAC_PI_3},
+		{tinymath.EPSILON, tinymath.FRAC_PI_2},
+		{0.000, tinymath.FRAC_PI_2},
+		{-tinymath.EPSILON, tinymath.FRAC_PI_2},
+		{-0.500, 2.0 * tinymath.FRAC_PI_3},
+		{-0.707, 3.0 * tinymath.FRAC_PI_4},
+		{-0.866, 5.0 * tinymath.FRAC_PI_6},
+		{-1.000, tinymath.PI},
+		{-2.000, tinymath.NaN},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			close(t, tinymath.Acos(c.Given), c.Expected, 0.03)
+		})
+	}
+}
+
 func TestCos(t *testing.T) {
 	cases := []Case{
 		{0.000, 1.000},

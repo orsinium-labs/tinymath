@@ -27,9 +27,12 @@ func close(t *testing.T, act, exp float32, eps float32) {
 
 func TestAbs(t *testing.T) {
 	cases := []Case{
+		{0.0, 0.0},
+		{0.1, 0.1},
 		{1.0, 1.0},
 		{2.0, 2.0},
 		{3.45, 3.45},
+		{-0.1, 0.1},
 		{-1.0, 1.0},
 		{-2.0, 2.0},
 		{-3.45, 3.45},
