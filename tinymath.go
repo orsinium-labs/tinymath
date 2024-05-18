@@ -184,14 +184,13 @@ func IsInteger(x float32) bool {
 
 // Check if the number has a positive sign
 func IsSignPositive(x float32) bool {
-	return Abs(x) == x
+	return ToBits(x)&(1<<31) == 0
 }
 
 // Approximates the natural logarithm of the number.
 // Note: excessive precision ignored because it hides the origin of the numbers used for the
 // ln(1.0->2.0) polynomial
 func Ln(self float32) float32 {
-
 	// x may essentially be 1.0 but, as clippy notes, these kinds of
 	// floating point comparisons can fail when the bit pattern is not the sames
 	if Abs(self-1) < Epsilon {

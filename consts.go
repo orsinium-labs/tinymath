@@ -1,7 +1,5 @@
 package tinymath
 
-import "math"
-
 // COnstatnts from both Go and Rust stdlib typed as float32.
 const (
 	// Archimedes' constant (π)
@@ -131,11 +129,11 @@ const (
 
 var (
 	// Not a number
-	NaN float32 = float32(math.NaN())
+	NaN float32 = FromBits(0x7fc00000)
 
 	// Positive infinity
-	Inf float32 = float32(math.Inf(1))
+	Inf float32 = FromBits(0x7f800000)
 
 	// Negative infininty
-	NegInf float32 = float32(math.Inf(-1))
+	NegInf float32 = FromBits(0xff800000)
 )

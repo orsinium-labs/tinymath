@@ -227,6 +227,56 @@ func TestInvSqrt(t *testing.T) {
 	}
 }
 
+func TestIsNaN(t *testing.T) {
+	t.Parallel()
+	if !tinymath.IsNaN(tinymath.NaN) {
+		t.Fail()
+	}
+	if tinymath.IsNaN(tinymath.Inf) {
+		t.Fail()
+	}
+	if tinymath.IsNaN(tinymath.NegInf) {
+		t.Fail()
+	}
+	if tinymath.IsNaN(0.0) {
+		t.Fail()
+	}
+	if tinymath.IsNaN(0.1) {
+		t.Fail()
+	}
+	if tinymath.IsNaN(-1.1) {
+		t.Fail()
+	}
+	if tinymath.IsNaN(13.1) {
+		t.Fail()
+	}
+}
+
+func TestIsSignPositive(t *testing.T) {
+	t.Parallel()
+	if !tinymath.IsSignPositive(tinymath.NaN) {
+		t.Fatalf("nan")
+	}
+	if !tinymath.IsSignPositive(tinymath.Inf) {
+		t.Fatalf("inf")
+	}
+	if tinymath.IsSignPositive(tinymath.NegInf) {
+		t.Fatalf("-inf")
+	}
+	if !tinymath.IsSignPositive(0.0) {
+		t.Fatalf("0.0")
+	}
+	if !tinymath.IsSignPositive(0.1) {
+		t.Fatalf("0.1")
+	}
+	if tinymath.IsSignPositive(-1.1) {
+		t.Fatalf("-1.1")
+	}
+	if !tinymath.IsSignPositive(13.1) {
+		t.Fatalf("13.1")
+	}
+}
+
 func TestSqrt(t *testing.T) {
 	t.Parallel()
 	cases := []Case{
