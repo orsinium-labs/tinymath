@@ -1,3 +1,5 @@
+//go:build !tinygo.wasm && !wasm
+
 package tinymath
 
 // Functions that can be optimized for wasm
