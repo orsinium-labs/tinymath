@@ -7,31 +7,8 @@ import (
 	"github.com/orsinium-labs/tinymath"
 )
 
-type Case struct {
-	Given    float32
-	Expected float32
-}
-
-func (c Case) Check(t *testing.T, f func(float32) float32, max_err float32) {
-	given := c.Given
-	expected := c.Expected
-	t.Run(fmt.Sprintf("%f", given), func(t *testing.T) {
-		actual := f(given)
-		delta := tinymath.Abs(actual - expected)
-		if delta > max_err {
-			t.Fatalf("f(%f) == %f (expected %f)", given, actual, expected)
-		}
-	})
-}
-
-func check(t *testing.T, f func(float32) float32, max_err float32, cases []Case) {
-	for _, tc := range cases {
-		tc.Check(t, f, max_err)
-	}
-}
-
 func TestCos(t *testing.T) {
-	check(t, tinymath.Cos, 0.002, []Case{
+	cases := []Case{
 		{0.000, 1.000},
 		{0.140, 0.990},
 		{0.279, 0.961},
@@ -78,11 +55,17 @@ func TestCos(t *testing.T) {
 		{6.004, 0.961},
 		{6.144, 0.990},
 		{6.283, 1.000},
-	})
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			close(t, tinymath.Cos(c.Given), c.Expected, 0.002)
+		})
+	}
 }
 
 func TestSin(t *testing.T) {
-	check(t, tinymath.Sin, 0.002, []Case{
+	cases := []Case{
 		{0.000, 0.000},
 		{0.140, 0.139},
 		{0.279, 0.276},
@@ -129,11 +112,17 @@ func TestSin(t *testing.T) {
 		{6.004, -0.276},
 		{6.144, -0.139},
 		{6.283, 0.000},
-	})
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			close(t, tinymath.Sin(c.Given), c.Expected, 0.002)
+		})
+	}
 }
 
 func TestTan(t *testing.T) {
-	check(t, tinymath.Tan, 0.006, []Case{
+	cases := []Case{
 		{0.000, 0.000},
 		{0.140, 0.141},
 		{0.279, 0.287},
@@ -180,5 +169,11 @@ func TestTan(t *testing.T) {
 		{6.004, -0.287},
 		{6.144, -0.141},
 		{6.283, 0.000},
-	})
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			close(t, tinymath.Tan(c.Given), c.Expected, 0.006)
+		})
+	}
 }
