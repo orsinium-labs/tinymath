@@ -73,6 +73,41 @@ func TestCeil(t *testing.T) {
 	}
 }
 
+func TestCopySign(t *testing.T) {
+	const large = 100_000_000.13425345345
+	cases := []Case2{
+		{-1.0, -1.0, -1.0},
+		{-1.0, 1.0, 1.0},
+		{1.0, -1.0, -1.0},
+		{1.0, 1.0, 1.0},
+		{large, -large, -large},
+		{-large, large, large},
+		{large, large, large},
+		{-large, -large, -large},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f_%f", c.Left, c.Right), func(t *testing.T) {
+			eq(t, tinymath.CopySign(c.Left, c.Right), c.Expected)
+		})
+	}
+}
+
+func TestDivEuclid(t *testing.T) {
+	cases := []Case2{
+		{7., 4., 1.},
+		{-7., 4., -2.},
+		{7., -4., -1.},
+		{-7., -4., 2.},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f_%f", c.Left, c.Right), func(t *testing.T) {
+			eq(t, tinymath.DivEuclid(c.Left, c.Right), c.Expected)
+		})
+	}
+}
+
 func TestSqrt(t *testing.T) {
 	cases := []Case{
 		{1.0, 1.0},
