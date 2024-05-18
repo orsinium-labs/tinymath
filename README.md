@@ -33,5 +33,6 @@ Here is a comparison of WebAssembly binary size (built with TinyGo) when using t
 | powf         |      873 |   9167 |    9% |
 | round        |      129 |    171 |   75% |
 | sin          |      198 |   1237 |   16% |
+| trunc        |      136 |     57 |  238% |
 
 To reproduce: `python3 size_bench.py`
