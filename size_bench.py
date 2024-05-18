@@ -29,7 +29,7 @@ def get_size(path: Path) -> int:
 
 def main():
     print('| function     | tinymath | stdlib | ratio |')
-    print('| ------------ | --------:| ------:| ----- |')
+    print('| ------------ | --------:| ------:| -----:|')
     root = Path(__file__).parent / 'size_bench'
     for tiny_path in sorted((root / 'tiny').iterdir()):
         std_path = root / 'std' / tiny_path.name

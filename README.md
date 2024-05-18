@@ -1,4 +1,4 @@
-# tinymath
+# 🧮 tinymath
 
 The fastest Go math library for constrained environments, like microcontrollers or WebAssembly.
 
@@ -8,24 +8,24 @@ The fastest Go math library for constrained environments, like microcontrollers 
 * Most algorithms are ported from [micromath](https://github.com/tarcieri/micromath) Rust library.
 * Zero dependency.
 
-## Installation
+## 📦 Installation
 
 ```bash
 go get github.com/orsinium-labs/tinymath
 ```
 
-## Usage
+## 🔧 Usage
 
 ```go
 fmt.Println(tinymath.Sin(tinymath.Pi))
 ```
 
-## Size
+## 🔬 Size
 
 Here is a comparison of WebAssembly binary size (built with TinyGo) when using tinymath vs stdlib math:
 
 | function     | tinymath | stdlib | ratio |
-| ------------ | --------:| ------:| ----- |
+| ------------ | --------:| ------:| -----:|
 | atan2        |      167 |    782 |   21% |
 | exp          |      535 |   2722 |   19% |
 | fract        |      206 |    154 |  133% |
