@@ -13,12 +13,17 @@ type Case struct {
 }
 
 func eq(t *testing.T, act, exp float32) {
+	t.Helper()
 	if act != exp {
 		t.Fatalf("%f != %f", act, exp)
 	}
 }
 
 func close(t *testing.T, act, exp float32, eps float32) {
+	t.Helper()
+	if tinymath.IsNaN(exp) && !tinymath.IsNaN(act) {
+		t.Fatalf("%f is not NaN", act)
+	}
 	delta := tinymath.Abs(act - exp)
 	if delta > eps {
 		t.Fatalf("%f != %f", act, exp)

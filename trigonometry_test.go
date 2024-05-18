@@ -31,6 +31,28 @@ func TestAcos(t *testing.T) {
 	}
 }
 
+func TestAsin(t *testing.T) {
+	act := tinymath.Asin(tinymath.Sin(tinymath.FRAC_PI_2))
+	close(t, act, tinymath.FRAC_PI_2, tinymath.EPSILON)
+}
+
+func TestAtan(t *testing.T) {
+	cases := []Case{
+		{tinymath.Sqrt(3.0) / 3.0, tinymath.FRAC_PI_6},
+		{1.0, tinymath.FRAC_PI_4},
+		{tinymath.Sqrt(3.0), tinymath.FRAC_PI_3},
+		{-tinymath.Sqrt(3.0) / 3.0, -tinymath.FRAC_PI_6},
+		{-1.0, -tinymath.FRAC_PI_4},
+		{-tinymath.Sqrt(3.0), -tinymath.FRAC_PI_3},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			close(t, tinymath.Atan(c.Given), c.Expected, 0.03)
+		})
+	}
+}
+
 func TestCos(t *testing.T) {
 	cases := []Case{
 		{0.000, 1.000},
