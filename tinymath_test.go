@@ -861,3 +861,31 @@ func TestSignum(t *testing.T) {
 		})
 	}
 }
+
+func TestTrunc(t *testing.T) {
+	t.Parallel()
+	cases := []Case{
+		{-1.1, -1.0},
+		{-0.1, 0.0},
+		{0.0, 0.0},
+		{1.0, 1.0},
+		{1.1, 1.0},
+		{2.9, 2.0},
+		{-100_000_000.13425345345, -100_000_000.0},
+		{100_000_000.13425345345, 100_000_000.0},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			act := tinymath.Trunc(c.Given)
+			eq(t, act, c.Expected)
+		})
+	}
+
+	for i := float32(-20.); i < 20.; i += .34 {
+		i := i
+		t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
+			eq(t, tinymath.Trunc(i), float32(math.Trunc(float64(i))))
+		})
+	}
+}
