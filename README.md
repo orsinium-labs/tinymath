@@ -28,6 +28,7 @@ Here is a comparison of WebAssembly binary size (built with TinyGo) when using t
 | ------------ | --------:| ------:| ----- |
 | atan2        |      167 |    782 |   21% |
 | exp          |      489 |   2722 |   17% |
+| fract        |      166 |    154 |  107% |
 | hypot        |       94 |    203 |   46% |
 | ln           |      196 |   4892 |    4% |
 | powf         |      813 |   9167 |    8% |
