@@ -775,3 +775,71 @@ func TestPowI(t *testing.T) {
 		}
 	}
 }
+
+func TestRecip(t *testing.T) {
+	t.Parallel()
+	cases := []Case{
+		{0.00001, 100000.0},
+		{1.0, 1.0},
+		{2.0, 0.5},
+		{0.25, 4.0},
+		{-0.5, -2.0},
+		{tinymath.PI, 1.0 / tinymath.PI},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			act := tinymath.Recip(c.Given)
+			delta := tinymath.Abs(act - c.Expected)
+			if delta/c.Expected > 1e-5 {
+				t.Fatalf("%f != %f", act, c.Expected)
+			}
+		})
+	}
+}
+
+func TestRemEuclid(t *testing.T) {
+	t.Parallel()
+	cases := []Case2{
+		{7, 4, 3},
+		{-7, 4, 1},
+		{7, -4, 3},
+		{-7, -4, 1},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f_%f", c.Left, c.Right), func(t *testing.T) {
+			act := tinymath.RemEuclid(c.Left, c.Right)
+			eq(t, act, c.Expected)
+		})
+	}
+}
+
+func TestRound(t *testing.T) {
+	t.Parallel()
+	cases := []Case{
+		{0.0, 0.0},
+		{0.49999, 0.0},
+		{-0.49999, 0.0},
+		{0.5, 1.0},
+		{-0.5, -1.0},
+		{9999.499, 9999.0},
+		{-9999.499, -9999.0},
+		{9999.5, 10000.0},
+		{-9999.5, -10000.0},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			act := tinymath.Round(c.Given)
+			eq(t, act, c.Expected)
+		})
+	}
+
+	for i := float32(-20.); i < 20.; i += .34 {
+		i := i
+		t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
+			eq(t, tinymath.Round(i), float32(math.Round(float64(i))))
+		})
+	}
+}
