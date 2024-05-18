@@ -1,8 +1,8 @@
 package tinymath
 
 import (
-	"math"
 	"math/bits"
+	"unsafe"
 )
 
 const (
@@ -14,11 +14,11 @@ const (
 )
 
 func ToBits(x float32) uint32 {
-	return math.Float32bits(x)
+	return *(*uint32)(unsafe.Pointer(&x))
 }
 
 func FromBits(x uint32) float32 {
-	return math.Float32frombits(x)
+	return *(*float32)(unsafe.Pointer(&x))
 }
 
 func Max[N float32 | int32](a, b N) N {

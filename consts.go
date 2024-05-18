@@ -1,6 +1,6 @@
 package tinymath
 
-// COnstatnts from both Go and Rust stdlib typed as float32.
+// Constatnts from both Go and Rust stdlib typed as float32.
 const (
 	// Archimedes' constant (π)
 	Pi float32 = 3.14159265358979323846264338327950288
