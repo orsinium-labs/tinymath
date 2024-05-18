@@ -12,16 +12,16 @@ func TestAcos(t *testing.T) {
 	cases := []Case{
 		{2.000, tinymath.NaN},
 		{1.000, 0.0},
-		{0.866, tinymath.FRAC_PI_6},
-		{0.707, tinymath.FRAC_PI_4},
-		{0.500, tinymath.FRAC_PI_3},
-		{tinymath.EPSILON, tinymath.FRAC_PI_2},
-		{0.000, tinymath.FRAC_PI_2},
-		{-tinymath.EPSILON, tinymath.FRAC_PI_2},
-		{-0.500, 2.0 * tinymath.FRAC_PI_3},
-		{-0.707, 3.0 * tinymath.FRAC_PI_4},
-		{-0.866, 5.0 * tinymath.FRAC_PI_6},
-		{-1.000, tinymath.PI},
+		{0.866, tinymath.FracPi6},
+		{0.707, tinymath.FracPi4},
+		{0.500, tinymath.FracPi3},
+		{tinymath.Epsilon, tinymath.FracPi2},
+		{0.000, tinymath.FracPi2},
+		{-tinymath.Epsilon, tinymath.FracPi2},
+		{-0.500, 2.0 * tinymath.FracPi3},
+		{-0.707, 3.0 * tinymath.FracPi4},
+		{-0.866, 5.0 * tinymath.FracPi6},
+		{-1.000, tinymath.Pi},
 		{-2.000, tinymath.NaN},
 	}
 	for _, c := range cases {
@@ -33,18 +33,18 @@ func TestAcos(t *testing.T) {
 }
 
 func TestAsin(t *testing.T) {
-	act := tinymath.Asin(tinymath.Sin(tinymath.FRAC_PI_2))
-	close(t, act, tinymath.FRAC_PI_2, tinymath.EPSILON)
+	act := tinymath.Asin(tinymath.Sin(tinymath.FracPi2))
+	close(t, act, tinymath.FracPi2, tinymath.Epsilon)
 }
 
 func TestAtan(t *testing.T) {
 	cases := []Case{
 		// {tinymath.Sqrt(3.0) / 3.0, tinymath.FRAC_PI_6},
-		{1.0, tinymath.FRAC_PI_4},
-		{tinymath.Sqrt(3.0), tinymath.FRAC_PI_3},
+		{1.0, tinymath.FracPi4},
+		{tinymath.Sqrt(3.0), tinymath.FracPi3},
 		// {-tinymath.Sqrt(3.0) / 3.0, -tinymath.FRAC_PI_6},
-		{-1.0, -tinymath.FRAC_PI_4},
-		{-tinymath.Sqrt(3.0), -tinymath.FRAC_PI_3},
+		{-1.0, -tinymath.FracPi4},
+		{-tinymath.Sqrt(3.0), -tinymath.FracPi3},
 	}
 	for _, c := range cases {
 		c := c
@@ -57,9 +57,9 @@ func TestAtan(t *testing.T) {
 func TestAtan2(t *testing.T) {
 	cases := []Case2{
 		{0.0, 1.0, 0.0},
-		{0.0, -1.0, tinymath.PI},
+		{0.0, -1.0, tinymath.Pi},
 		{3.0, 2.0, tinymath.Atan(3.0 / 2.0)},
-		{2.0, -1.0, tinymath.Atan(2.0/-1.0) + tinymath.PI},
+		{2.0, -1.0, tinymath.Atan(2.0/-1.0) + tinymath.Pi},
 		// {-2.0, -1.0, tinymath.Atan(-2.0/-1.0) - tinymath.PI},
 	}
 	for _, c := range cases {

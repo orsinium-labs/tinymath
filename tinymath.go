@@ -68,10 +68,10 @@ func ExpLn2Approx(self float32, partial_iter uint32) float32 {
 	if self == 0.0 {
 		return 1
 	}
-	if Abs(self-1) < EPSILON {
+	if Abs(self-1) < Epsilon {
 		return E
 	}
-	if Abs(self-(-1)) < EPSILON {
+	if Abs(self-(-1)) < Epsilon {
 		return 1. / E
 	}
 
@@ -83,7 +83,7 @@ func ExpLn2Approx(self float32, partial_iter uint32) float32 {
 	x_trunc := Trunc(x_ln2recip)
 
 	//guaranteed to be 0 < x < 1.0
-	x_fract = x_fract * LN_2
+	x_fract = x_fract * Ln2
 	fract_exp := ExpSmallX(x_fract, partial_iter)
 
 	//need the 2^n portion, we can just extract that from the whole number exp portion
@@ -194,7 +194,7 @@ func Ln(self float32) float32 {
 
 	// x may essentially be 1.0 but, as clippy notes, these kinds of
 	// floating point comparisons can fail when the bit pattern is not the sames
-	if Abs(self-1) < EPSILON {
+	if Abs(self-1) < Epsilon {
 		return 0.0
 	}
 
@@ -220,7 +220,7 @@ func Ln(self float32) float32 {
 	ln_1to2_polynomial := -1.741_793_9 + (2.821_202_6+(-1.469_956_8+(0.447_179_55-0.056_570_851*x_working)*x_working)*x_working)*x_working
 
 	// ln(2) * n + ln(y)
-	result := float32(base2_exponent)*LN_2 + ln_1to2_polynomial
+	result := float32(base2_exponent)*Ln2 + ln_1to2_polynomial
 
 	if x_less_than_1 {
 		return -result

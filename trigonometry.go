@@ -5,9 +5,9 @@ func Acos(self float32) float32 {
 	if self > 0.0 {
 		return Atan(Sqrt(1-self*self) / self)
 	} else if self == 0.0 {
-		return PI / 2.
+		return Pi / 2.
 	} else {
-		return Atan(Sqrt(1-self*self)/self) + PI
+		return Atan(Sqrt(1-self*self)/self) + Pi
 	}
 }
 
@@ -21,7 +21,7 @@ func Asin(self float32) float32 {
 //
 // Returns [`NAN`] if the number is [`NAN`].
 func Atan(self float32) float32 {
-	return FRAC_PI_2 * AtanNorm(self)
+	return FracPi2 * AtanNorm(self)
 }
 
 // Approximates `atan(x)` normalized to the `[−1,1]` range with a maximum
@@ -51,9 +51,9 @@ func AtanNorm(self float32) float32 {
 func Atan2(self float32, rhs float32) float32 {
 	n := Atan2Norm(self, rhs)
 	if n > 2.0 {
-		return PI/2.0*n - 4.0
+		return Pi/2.0*n - 4.0
 	} else {
-		return PI / 2.0 * n
+		return Pi / 2.0 * n
 	}
 }
 
@@ -82,7 +82,7 @@ func Atan2Norm(y float32, x float32) float32 {
 // Approximates `cos(x)` in radians with a maximum error of `0.002`.
 func Cos(self float32) float32 {
 	x := self
-	x *= FRAC_1_PI / 2.0
+	x *= Frac1Pi / 2.0
 	x -= 0.25 + Floor(x+0.25)
 	x *= 16.0 * (Abs(x) - 0.5)
 	x += 0.225 * x * (Abs(x) - 1.0)
@@ -91,13 +91,13 @@ func Cos(self float32) float32 {
 
 // Approximates `sin(x)` in radians with a maximum error of `0.002`.
 func Sin(self float32) float32 {
-	return Cos(self - PI/2.0)
+	return Cos(self - Pi/2.0)
 }
 
 // Simultaneously computes the sine and cosine of the number, `x`.
 // Returns `(sin(x), cos(x))`.
 func SinCos(self float32) (float32, float32) {
-	sin := Cos(self - PI/2.0)
+	sin := Cos(self - Pi/2.0)
 	cos := Cos(self)
 	return sin, cos
 }

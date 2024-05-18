@@ -200,7 +200,7 @@ func TestHypot(t *testing.T) {
 	for _, c := range cases {
 		c := c
 		t.Run(fmt.Sprintf("%f_%f", c.Left, c.Right), func(t *testing.T) {
-			close(t, tinymath.Hypot(c.Left, c.Right), c.Expected, tinymath.EPSILON)
+			close(t, tinymath.Hypot(c.Left, c.Right), c.Expected, tinymath.Epsilon)
 		})
 	}
 }
@@ -784,7 +784,7 @@ func TestRecip(t *testing.T) {
 		{2.0, 0.5},
 		{0.25, 4.0},
 		{-0.5, -2.0},
-		{tinymath.PI, 1.0 / tinymath.PI},
+		{tinymath.Pi, 1.0 / tinymath.Pi},
 	}
 	for _, c := range cases {
 		c := c
