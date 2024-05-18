@@ -12,6 +12,12 @@ type Case struct {
 	Expected float32
 }
 
+type Case2 struct {
+	Left     float32
+	Right    float32
+	Expected float32
+}
+
 func eq(t *testing.T, act, exp float32) {
 	t.Helper()
 	if act != exp {
@@ -46,6 +52,23 @@ func TestAbs(t *testing.T) {
 		c := c
 		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
 			eq(t, tinymath.Abs(c.Given), c.Expected)
+		})
+	}
+}
+
+func TestCeil(t *testing.T) {
+	cases := []Case{
+		{-1.1, -1.0},
+		{-0.1, 0.0},
+		{0.0, 0.0},
+		{1.0, 1.0},
+		{1.1, 2.0},
+		{2.9, 3.0},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			eq(t, tinymath.Ceil(c.Given), c.Expected)
 		})
 	}
 }

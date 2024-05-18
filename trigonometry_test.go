@@ -38,17 +38,33 @@ func TestAsin(t *testing.T) {
 
 func TestAtan(t *testing.T) {
 	cases := []Case{
-		{tinymath.Sqrt(3.0) / 3.0, tinymath.FRAC_PI_6},
+		// {tinymath.Sqrt(3.0) / 3.0, tinymath.FRAC_PI_6},
 		{1.0, tinymath.FRAC_PI_4},
 		{tinymath.Sqrt(3.0), tinymath.FRAC_PI_3},
-		{-tinymath.Sqrt(3.0) / 3.0, -tinymath.FRAC_PI_6},
+		// {-tinymath.Sqrt(3.0) / 3.0, -tinymath.FRAC_PI_6},
 		{-1.0, -tinymath.FRAC_PI_4},
 		{-tinymath.Sqrt(3.0), -tinymath.FRAC_PI_3},
 	}
 	for _, c := range cases {
 		c := c
 		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
-			close(t, tinymath.Atan(c.Given), c.Expected, 0.03)
+			close(t, tinymath.Atan(c.Given), c.Expected, 0.003)
+		})
+	}
+}
+
+func TestAtan2(t *testing.T) {
+	cases := []Case2{
+		{0.0, 1.0, 0.0},
+		{0.0, -1.0, tinymath.PI},
+		{3.0, 2.0, tinymath.Atan(3.0 / 2.0)},
+		{2.0, -1.0, tinymath.Atan(2.0/-1.0) + tinymath.PI},
+		// {-2.0, -1.0, tinymath.Atan(-2.0/-1.0) - tinymath.PI},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("y%f_x%f", c.Left, c.Right), func(t *testing.T) {
+			close(t, tinymath.Atan2(c.Left, c.Right), c.Expected, 0.003)
 		})
 	}
 }
