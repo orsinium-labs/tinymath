@@ -1,6 +1,9 @@
 package tinymath
 
-import "math"
+import (
+	"math"
+	"math/bits"
+)
 
 const (
 	SIGN_MASK uint32 = 0x8000_0000
@@ -159,7 +162,7 @@ func Fract(self float32) float32 {
 }
 
 func leadingZeros(x uint32) uint32 {
-	panic("todo")
+	return uint32(bits.LeadingZeros32(x))
 }
 
 // Calculate the length of the hypotenuse of a right-angle triangle.

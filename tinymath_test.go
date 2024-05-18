@@ -108,6 +108,52 @@ func TestDivEuclid(t *testing.T) {
 	}
 }
 
+func TestExp(t *testing.T) {
+	cases := []Case{
+		{1e-07, 1.0000001},
+		{1e-06, 1.000001},
+		{1e-05, 1.00001},
+		{1e-04, 1.0001},
+		{0.001, 1.0010005},
+		{0.01, 1.0100502},
+		{0.1, 1.105171},
+		{1.0, 2.7182817},
+		{10.0, 22026.465},
+		{-1e-08, 1.0},
+		{-1e-07, 0.9999999},
+		{-1e-06, 0.999999},
+		{-1e-05, 0.99999},
+		{-1e-04, 0.9999},
+		{-0.001, 0.9990005},
+		{-0.01, 0.99004984},
+		{-0.1, 0.9048374},
+		{-1.0, 0.36787945},
+		{-10.0, 4.539_993e-5},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			close(t, tinymath.Exp(c.Given), c.Expected, 0.001*c.Expected)
+		})
+	}
+}
+
+func TestFloor(t *testing.T) {
+	cases := []Case{
+		{-1.1, -2.0},
+		{-0.1, -1.0},
+		{0.0, 0.0},
+		{1.0, 1.0},
+		{1.1, 1.0},
+		{2.9, 2.0},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			eq(t, tinymath.Floor(c.Given), c.Expected)
+		})
+	}
+}
 func TestSqrt(t *testing.T) {
 	cases := []Case{
 		{1.0, 1.0},
