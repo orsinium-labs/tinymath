@@ -259,11 +259,6 @@ func Log2(self float32) float32 {
 	return Ln(self) * LOG2_E
 }
 
-// Computes `(self * a) + b`.
-func MulAdd(self float32, a float32, b float32) float32 {
-	return self*a + b
-}
-
 // Approximates a number raised to a floating point power.
 func PowF(self float32, n float32) float32 {
 	// using x^n = exp(ln(x^n)) = exp(n*ln(x))
