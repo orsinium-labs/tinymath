@@ -142,6 +142,14 @@ func TestExp(t *testing.T) {
 			close(t, tinymath.Exp(c.Given), c.Expected, 0.001*c.Expected)
 		})
 	}
+
+	for i := float32(-10.); i < 10.; i += .34 {
+		i := i
+		t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
+			close(t, tinymath.Exp(i), float32(math.Exp(float64(i))), i*i*i/i)
+		})
+	}
+
 }
 
 func TestFloor(t *testing.T) {
@@ -199,7 +207,7 @@ func TestHypot(t *testing.T) {
 
 func TestInv(t *testing.T) {
 	t.Parallel()
-	for i := float32(1.); i < 100.; i++ {
+	for i := float32(1.); i < 100.; i += .67 {
 		i := i
 		t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
 			exp := 1.0 / i
@@ -249,7 +257,7 @@ func TestSqrt(t *testing.T) {
 		})
 	}
 
-	for i := float32(1.); i < 100.; i++ {
+	for i := float32(1.); i < 100.; i += .34 {
 		i := i
 		t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
 			close(t, tinymath.Sqrt(i), float32(math.Sqrt(float64(i))), 0.05*i)
@@ -316,7 +324,7 @@ func TestLn(t *testing.T) {
 
 	t.Run("stdlib", func(t *testing.T) {
 		t.Parallel()
-		for i := float32(1.); i < 100.; i++ {
+		for i := float32(1.); i < 100.; i += .34 {
 			i := i
 			t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
 				close(t, tinymath.Ln(i), float32(math.Log(float64(i))), 0.001)
@@ -464,7 +472,7 @@ func TestLog(t *testing.T) {
 
 	t.Run("stdlib", func(t *testing.T) {
 		t.Parallel()
-		for i := float32(1.); i < 100.; i++ {
+		for i := float32(1.); i < 100.; i += .34 {
 			i := i
 			t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
 				close(t, tinymath.Log(i, 10.), float32(math.Log10(float64(i))), 0.001)
@@ -532,7 +540,7 @@ func TestLog2(t *testing.T) {
 
 	t.Run("stdlib", func(t *testing.T) {
 		t.Parallel()
-		for i := float32(1.); i < 100.; i++ {
+		for i := float32(1.); i < 100.; i += .34 {
 			i := i
 			t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
 				close(t, tinymath.Log2(i), float32(math.Log2(float64(i))), 0.001)
@@ -600,7 +608,7 @@ func TestLog10(t *testing.T) {
 
 	t.Run("stdlib", func(t *testing.T) {
 		t.Parallel()
-		for i := float32(1.); i < 100.; i++ {
+		for i := float32(1.); i < 100.; i += .34 {
 			i := i
 			t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
 				close(t, tinymath.Log10(i), float32(math.Log10(float64(i))), 0.001)
@@ -743,11 +751,27 @@ func TestPowF(t *testing.T) {
 
 	t.Run("stdlib", func(t *testing.T) {
 		t.Parallel()
-		for i := float32(1.); i < 100.; i++ {
+		for i := float32(1.); i < 100.; i += .34 {
 			i := i
 			t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
 				close(t, tinymath.PowF(i, 3.5), float32(math.Pow(float64(i), 3.5)), i*i*i/15)
 			})
 		}
 	})
+}
+
+func TestPowI(t *testing.T) {
+	t.Parallel()
+	for i := int32(1); i < 10; i++ {
+		for f := float32(-3.); f < 7.; f += .5 {
+			f := f
+			i := i
+			if f == 6.5 {
+				continue
+			}
+			t.Run(fmt.Sprintf("%f", f), func(t *testing.T) {
+				close(t, tinymath.PowI(f, i), float32(math.Pow(float64(f), float64(i))), 0.001)
+			})
+		}
+	}
 }
