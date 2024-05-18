@@ -2,6 +2,7 @@ package tinymath_test
 
 import (
 	"fmt"
+	"math"
 	"testing"
 
 	"github.com/orsinium-labs/tinymath"
@@ -154,6 +155,60 @@ func TestFloor(t *testing.T) {
 		})
 	}
 }
+
+func TestFract(t *testing.T) {
+	cases := []Case{
+		{tinymath.Fract(2.9) + 2.0, 2.9},
+		{tinymath.Fract(-1.1) - 1.0, -1.1},
+		{tinymath.Fract(-0.1), -0.1},
+		{tinymath.Fract(0.0), 0.0},
+		{tinymath.Fract(1.0) + 1.0, 1.0},
+		{tinymath.Fract(1.1) + 1.0, 1.1},
+		{tinymath.Fract(-100_000_000.13425345345), 0.0},
+		{tinymath.Fract(100_000_000.13425345345), 0.0},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			eq(t, c.Given, c.Expected)
+		})
+	}
+}
+
+func TestHypot(t *testing.T) {
+	cases := []Case2{
+		{2., 3., tinymath.Sqrt(13.)},
+		{3., 4., tinymath.Sqrt(25.)},
+		{12., 7., tinymath.Sqrt(193.)},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f_%f", c.Left, c.Right), func(t *testing.T) {
+			close(t, tinymath.Hypot(c.Left, c.Right), c.Expected, tinymath.EPSILON)
+		})
+	}
+}
+
+func TestInv(t *testing.T) {
+	for i := float32(1.); i < 100.; i++ {
+		i := i
+		t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
+			exp := 1.0 / i
+			close(t, tinymath.Inv(i), exp, 0.08)
+		})
+	}
+}
+
+func TestInvSqrt(t *testing.T) {
+	for i := float32(1.); i < 100.; i++ {
+		i := i
+		t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
+			exp := 1.0 / tinymath.Sqrt(i)
+			close(t, tinymath.InvSqrt(i), exp, 0.05)
+		})
+	}
+}
+
 func TestSqrt(t *testing.T) {
 	cases := []Case{
 		{1.0, 1.0},
@@ -180,6 +235,13 @@ func TestSqrt(t *testing.T) {
 		c := c
 		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
 			close(t, tinymath.Sqrt(c.Given), c.Expected, 0.005*c.Given)
+		})
+	}
+
+	for i := float32(1.); i < 100.; i++ {
+		i := i
+		t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
+			close(t, tinymath.Sqrt(i), float32(math.Sqrt(float64(i))), 0.05*i)
 		})
 	}
 }

@@ -2,6 +2,7 @@ package tinymath_test
 
 import (
 	"fmt"
+	"math"
 	"testing"
 
 	"github.com/orsinium-labs/tinymath"
@@ -122,6 +123,13 @@ func TestCos(t *testing.T) {
 		c := c
 		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
 			close(t, tinymath.Cos(c.Given), c.Expected, 0.002)
+		})
+	}
+
+	for i := float32(1.); i < 100.; i++ {
+		i := i
+		t.Run(fmt.Sprintf("%f", i), func(t *testing.T) {
+			close(t, tinymath.Sin(i), float32(math.Sin(float64(i))), 0.002)
 		})
 	}
 }
