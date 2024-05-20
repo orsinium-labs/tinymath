@@ -341,7 +341,7 @@ func Round(self float32) float32 {
 // * `1.0` if the number is positive, `+0.0` or `INFINITY`
 // * `-1.0` if the number is negative, `-0.0` or `NEG_INFINITY`
 // * `NAN` if the number is `NAN`
-func Signum(self float32) float32 {
+func Sign(self float32) float32 {
 	if IsNaN(self) {
 		return NaN
 	} else {

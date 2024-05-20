@@ -894,7 +894,7 @@ func TestRound(t *testing.T) {
 	}
 }
 
-func TestSignum(t *testing.T) {
+func TestSign(t *testing.T) {
 	t.Parallel()
 	cases := []Case{
 		{tinymath.Inf, 1.0},
@@ -906,7 +906,7 @@ func TestSignum(t *testing.T) {
 	for _, c := range cases {
 		c := c
 		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
-			act := tinymath.Signum(c.Given)
+			act := tinymath.Sign(c.Given)
 			eq(t, act, c.Expected)
 		})
 	}
