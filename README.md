@@ -1,5 +1,7 @@
 # 🧮 tinymath
 
+[ [📚 docs](https://pkg.go.dev/github.com/orsinium-labs/tinymath) ] [ [🐙 github](https://github.com/orsinium-labs/tinymath) ]
+
 The fastest Go math library for constrained environments, like microcontrollers or WebAssembly.
 
 * Optimizes for performance and small code size at the cost of precision.
@@ -37,3 +39,5 @@ Here is a comparison of WebAssembly binary size (built with TinyGo) when using t
 | trunc        |      136 |     57 |  238% |
 
 To reproduce: `python3 size_bench.py`
+
+The two functions that are bigger in tinymath (but still small!) are the ones that have an optimized wasm-specific assembly in the standard library implementation. We're working on adding such assembly code on our side as well.
