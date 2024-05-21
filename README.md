@@ -28,6 +28,7 @@ Here is a comparison of WebAssembly binary size (built with TinyGo) when using t
 
 | function     | tinymath | stdlib | ratio |
 | ------------ | --------:| ------:| -----:|
+| atan         |      106 |    367 |   28% |
 | atan2        |      167 |    782 |   21% |
 | exp          |      501 |   2722 |   18% |
 | fract        |      206 |    154 |  133% |
@@ -36,6 +37,8 @@ Here is a comparison of WebAssembly binary size (built with TinyGo) when using t
 | powf         |      739 |   9167 |    8% |
 | round        |      129 |    171 |   75% |
 | sin          |      125 |   1237 |   10% |
+| sqrt         |       82 |     57 |  143% |
+| tan          |      138 |   1137 |   12% |
 | trunc        |       57 |     57 |  100% |
 
 To reproduce: `python3 size_bench.py`
