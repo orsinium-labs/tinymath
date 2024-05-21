@@ -1,3 +1,5 @@
+//go:build !tinygo.wasm
+
 package tinymath
 
 // Functions that can be optimized for wasm
@@ -14,6 +16,17 @@ func Floor(self float32) float32 {
 		res -= 1.0
 	}
 	return float32(res)
+}
+
+// Approximates the square root of a number with an average deviation of ~5%.
+//
+// Returns [`NAN`] if `self` is a negative number.
+func Sqrt(self float32) float32 {
+	if self >= 0.0 {
+		return FromBits((ToBits(self) + 0x3f80_0000) >> 1)
+	} else {
+		return NaN
+	}
 }
 
 // Returns the integer part of a number.

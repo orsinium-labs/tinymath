@@ -349,17 +349,6 @@ func Sign(self float32) float32 {
 	}
 }
 
-// Approximates the square root of a number with an average deviation of ~5%.
-//
-// Returns [`NAN`] if `self` is a negative number.
-func Sqrt(self float32) float32 {
-	if self >= 0.0 {
-		return FromBits((ToBits(self) + 0x3f80_0000) >> 1)
-	} else {
-		return NaN
-	}
-}
-
 func extractExponentBits(self float32) uint32 {
 	return (ToBits(self) & expMask) >> mantissaBits
 }
