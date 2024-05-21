@@ -7,7 +7,10 @@ package tinymath
 //
 // https://github.com/tinygo-org/tinygo/blob/6384ecace093df2d0b93915886954abfc4ecfe01/compiler/intrinsics.go#L114C5-L114C22
 
-import "math"
+import (
+	"math"
+	"math/bits"
+)
 
 func Ceil(self float32) float32 {
 	return float32(math.Ceil(float64(self)))
@@ -26,10 +29,5 @@ func Trunc(self float32) float32 {
 }
 
 func leadingZeros(x uint32) uint32 {
-	var n uint32 = 32
-	for x != 0 {
-		x >>= 1
-		n -= 1
-	}
-	return n
+	return uint32(bits.LeadingZeros32(x))
 }

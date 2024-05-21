@@ -30,11 +30,11 @@ Here is a comparison of WebAssembly binary size (built with TinyGo) when using t
 | ------------ | --------:| ------:| -----:|
 | atan         |      106 |    367 |   28% |
 | atan2        |      167 |    782 |   21% |
-| exp          |      501 |   2722 |   18% |
-| fract        |      206 |    154 |  133% |
+| exp          |      463 |   2722 |   17% |
+| fract        |      166 |    154 |  107% |
 | hypot        |       67 |    203 |   33% |
 | ln           |      196 |   4892 |    4% |
-| powf         |      739 |   9167 |    8% |
+| powf         |      701 |   9167 |    7% |
 | round        |      129 |    171 |   75% |
 | sin          |      125 |   1237 |   10% |
 | sqrt         |       57 |     57 |  100% |
