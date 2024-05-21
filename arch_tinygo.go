@@ -17,6 +17,10 @@ func Floor(self float32) float32 {
 	return float32(math.Floor(float64(self)))
 }
 
+func Sqrt(self float32) float32 {
+	return float32(math.Sqrt(float64(self)))
+}
+
 func Trunc(self float32) float32 {
 	return float32(math.Trunc(float64(self)))
 }
