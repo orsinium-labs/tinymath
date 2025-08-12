@@ -44,10 +44,10 @@ func AtanNorm(self float32) float32 {
 // Approximates the four quadrant arctangent of `self` (`y`) and
 // `rhs` (`x`) in radians with a maximum error of `0.002`.
 //
-// - `x = 0`, `y = 0`: `0`
-// - `x >= 0`: `arctan(y/x)` -> `[-pi/2, pi/2]`
-// - `y >= 0`: `arctan(y/x) + pi` -> `(pi/2, pi]`
-// - `y < 0`: `arctan(y/x) - pi` -> `(-pi, -pi/2)`
+//   - `x = 0`, `y = 0`: `0`
+//   - `x >= 0`: `arctan(y/x)` -> `[-pi/2, pi/2]`
+//   - `y >= 0`: `arctan(y/x) + pi` -> `(pi/2, pi]`
+//   - `y < 0`: `arctan(y/x) - pi` -> `(-pi, -pi/2)`
 func Atan2(self float32, rhs float32) float32 {
 	n := Atan2Norm(self, rhs)
 	if n > 2.0 {

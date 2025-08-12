@@ -245,10 +245,10 @@ func PowF(self float32, n float32) float32 {
 		return NaN
 	} else if IsEven(n) {
 		// if n is even, then we know that the result will have no sign, so we can remove it
-		return n * Exp(Ln(withoutSign(self)))
+		return n * Exp(Ln(Abs(self)))
 	} else {
 		// if n isn't even, we need to multiply by -1.0 at the end.
-		return -(n * Exp(Ln(withoutSign(self))))
+		return -(n * Exp(Ln(Abs(self))))
 	}
 }
 
@@ -369,8 +369,4 @@ func saturatingAdd(a, b int32) int32 {
 		return c
 	}
 	return 2147483647
-}
-
-func withoutSign(self float32) float32 {
-	return FromBits(ToBits(self) & ^signMask)
 }
