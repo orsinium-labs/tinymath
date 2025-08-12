@@ -59,8 +59,6 @@ func Exp(self float32) float32 {
 
 // Exp approximation for `f32`.
 func ExpLn2Approx(self float32, partial_iter uint32) float32 {
-	const LOG2_E = 1.44269504088896340735992468100189214
-
 	if self == 0.0 {
 		return 1
 	}
@@ -74,7 +72,7 @@ func ExpLn2Approx(self float32, partial_iter uint32) float32 {
 	// log base 2(E) == 1/ln(2)
 	// x_fract + x_whole = x/ln2_recip
 	// ln2*(x_fract + x_whole) = x
-	x_ln2recip := self * LOG2_E
+	x_ln2recip := self * Log2E
 	x_fract := Fract(x_ln2recip)
 	x_trunc := Trunc(x_ln2recip)
 
@@ -226,14 +224,12 @@ func Log(self float32, base float32) float32 {
 
 // Approximates the base 10 logarithm of the number.
 func Log10(self float32) float32 {
-	const LOG10_E = 0.434294481903251827651128918916605082
-	return Ln(self) * LOG10_E
+	return Ln(self) * Log10E
 }
 
 // Approximates the base 2 logarithm of the number.
 func Log2(self float32) float32 {
-	const LOG2_E = 1.44269504088896340735992468100189214
-	return Ln(self) * LOG2_E
+	return Ln(self) * Log2E
 }
 
 // Approximates a number raised to a floating point power.
