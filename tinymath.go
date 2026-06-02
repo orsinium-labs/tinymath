@@ -1,6 +1,9 @@
 package tinymath
 
-import "unsafe"
+import (
+	"math"
+	"unsafe"
+)
 
 const (
 	signMask     uint32 = 0x8000_0000
@@ -17,18 +20,19 @@ func FromBits(x uint32) float32 {
 	return *(*float32)(unsafe.Pointer(&x))
 }
 
-func Max[N float32 | int32](a, b N) N {
-	if a > b {
-		return a
+func Clamp(val, from, to float32) float32 {
+	if val < from {
+		return from
 	}
-	return b
+	return min(val, to)
 }
 
-func Min[N float32 | int32](a, b N) N {
-	if a < b {
-		return a
-	}
-	return b
+func Max(a, b float32) float32 {
+	return max(a, b)
+}
+
+func Min(a, b float32) float32 {
+	return min(a, b)
 }
 
 // Computes the absolute value of `self`.
@@ -76,11 +80,11 @@ func ExpLn2Approx(self float32, partial_iter uint32) float32 {
 	x_fract := Fract(x_ln2recip)
 	x_trunc := Trunc(x_ln2recip)
 
-	//guaranteed to be 0 < x < 1.0
+	// guaranteed to be 0 < x < 1.0
 	x_fract = x_fract * Ln2
 	fract_exp := ExpSmallX(x_fract, partial_iter)
 
-	//need the 2^n portion, we can just extract that from the whole number exp portion
+	// need the 2^n portion, we can just extract that from the whole number exp portion
 	fract_exponent := saturatingAdd(extractExponentValue(fract_exp), int32(x_trunc))
 
 	if fract_exponent < -expBias {
@@ -141,6 +145,24 @@ func Fract(self float32) float32 {
 	return CopySign(FromBits(fractional_normalized|new_exponent_bits), self)
 }
 
+// A 1D hash value from an input value for noise generation.
+//
+// Returns a value between 0 and 1.
+func Hash(p float32) float32 {
+	// Convert to integer and apply bit manipulation
+	h := math.Float32bits(p + 123.456789)
+
+	// Wang hash function
+	h = (h ^ 61) ^ (h >> 16)
+	h = h + (h << 3)
+	h = h ^ (h >> 4)
+	h = h * 0x27d4eb2d
+	h = h ^ (h >> 15)
+
+	// Convert back to float and normalize
+	return float32(h) / 4294967296.0
+}
+
 // Calculate the length of the hypotenuse of a right-angle triangle.
 func Hypot(self float32, rhs float32) float32 {
 	return Sqrt(self*self + rhs*rhs)
@@ -154,6 +176,23 @@ func Inv(self float32) float32 {
 // Approximate inverse square root with an average deviation of ~5%.
 func InvSqrt(self float32) float32 {
 	return FromBits(0x5f37_5a86 - (ToBits(self) >> 1))
+}
+
+// Check if two numbers are approximately equal to each other.
+func IsClose(a, b float32) bool {
+	if a == b {
+		return true
+	}
+	tolerance := Epsilon * Abs(a)
+	if tolerance < Epsilon {
+		tolerance = Epsilon
+	}
+	return Abs(a-b) < tolerance
+}
+
+// Check if the value is approximately equal to zero.
+func IsCloseToZero(x float32) bool {
+	return Abs(x) < Epsilon
 }
 
 // Check if the given number is NaN.
@@ -175,6 +214,24 @@ func IsInteger(x float32) bool {
 // Check if the number has a positive sign
 func IsSignPositive(x float32) bool {
 	return ToBits(x)&(1<<31) == 0
+}
+
+// Performs a reverse [Lerp], returning the weight factor of the value in the range.
+//
+//   - Return is between [0, 1] if the value is between [from, to]
+//   - Return <0 if the value is below 'from'
+//   - Return >1 if the value is above 'to'
+func InverseLerp(from, to, value float32) float32 {
+	return (value - from) / (to - from)
+}
+
+// Linear interpolation between two values by the factor defined in "weight".
+//
+// Weight should be between 0.0 and 1.0 (inclusive).
+// However, values outside this range are allowed and can be used to perform
+// extrapolation.
+func Lerp(from, to, weight float32) float32 {
+	return from + (to-from)*weight
 }
 
 // Approximates the natural logarithm of the number.
@@ -303,6 +360,16 @@ func PowI(self float32, n int32) float32 {
 	}
 }
 
+// Convert angle from radians to degrees.
+func RadToDeg(self float32) float32 {
+	return self * 360 / Tau
+}
+
+// Convert angle from degrees to radians.
+func DegToRad(self float32) float32 {
+	return self * Tau / 360
+}
+
 // Returns the reciprocal (inverse) of a number, `1/x`.
 func Recip(self float32) float32 {
 	x := self
@@ -345,6 +412,19 @@ func Sign(self float32) float32 {
 	}
 }
 
+// Wraps float32 in the half-open range [min, max) by wrapping around instead of clamping.
+func Wrap(value, min, max float32) float32 {
+	delta := max - min
+	if IsCloseToZero(delta) {
+		return min
+	}
+	result := value - (delta * Floor((value-min)/delta))
+	if IsClose(result, max) {
+		return max
+	}
+	return result
+}
+
 func extractExponentBits(self float32) uint32 {
 	return (ToBits(self) & expMask) >> mantissaBits
 }
@@ -364,5 +444,5 @@ func saturatingAdd(a, b int32) int32 {
 	if (c > a) == (b > 0) {
 		return c
 	}
-	return 2147483647
+	return 0x7fffffff
 }

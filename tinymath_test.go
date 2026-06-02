@@ -58,6 +58,53 @@ func TestAbs(t *testing.T) {
 	}
 }
 
+func TestClamp(t *testing.T) {
+	t.Parallel()
+	eq(t, tinymath.Clamp(1, -2, 2), 1)
+	eq(t, tinymath.Clamp(-3, -2, 2), -2)
+	eq(t, tinymath.Clamp(3, -2, 2), 2)
+}
+
+func TestMin(t *testing.T) {
+	t.Parallel()
+	cases := []Case2{
+		{0., 1., 0.},
+		{1., 0., 0.},
+		{2., 3., 2.},
+		{3., 2., 2.},
+		{2., -3., -3.},
+		{-3., 2., -3.},
+		{-tinymath.Inf, 2., -tinymath.Inf},
+		{2., -tinymath.Inf, -tinymath.Inf},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f_%f", c.Left, c.Right), func(t *testing.T) {
+			eq(t, tinymath.Min(c.Left, c.Right), c.Expected)
+		})
+	}
+}
+
+func TestMax(t *testing.T) {
+	t.Parallel()
+	cases := []Case2{
+		{0., 1., 1.},
+		{1., 0., 1.},
+		{2., 3., 3.},
+		{3., 2., 3.},
+		{2., -3., 2.},
+		{-3., 2., 2.},
+		{tinymath.Inf, 2., tinymath.Inf},
+		{2., tinymath.Inf, tinymath.Inf},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f_%f", c.Left, c.Right), func(t *testing.T) {
+			eq(t, tinymath.Max(c.Left, c.Right), c.Expected)
+		})
+	}
+}
+
 func TestCeil(t *testing.T) {
 	t.Parallel()
 	cases := []Case{
@@ -149,7 +196,30 @@ func TestExp(t *testing.T) {
 			close(t, tinymath.Exp(i), float32(math.Exp(float64(i))), i*i*i/i)
 		})
 	}
+}
 
+func TestHash1D(t *testing.T) {
+	t.Parallel()
+	cases := []Case{
+		{-1.1, 0},
+		{-0.1, 0},
+		{0.0, 0},
+		{1.0, 0},
+		{1.1, 0},
+		{2.9, 0},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			res := tinymath.Hash(c.Given)
+			if res > 1. {
+				t.FailNow()
+			}
+			if res < 0. {
+				t.FailNow()
+			}
+		})
+	}
 }
 
 func TestFloor(t *testing.T) {
@@ -274,6 +344,27 @@ func TestIsSignPositive(t *testing.T) {
 	}
 	if !tinymath.IsSignPositive(13.1) {
 		t.Fatalf("13.1")
+	}
+}
+
+func TestIsClose(t *testing.T) {
+	t.Parallel()
+	cases := []Case2{
+		{1.0, 1.0, 1},
+		{1.0, 1.0000001, 0},
+		{1.1, 1.0, 0},
+		{-1.0, 1.0, 0},
+		{2.44, 2.44, 1},
+		{tinymath.NaN, tinymath.NaN, 0},
+		{tinymath.Inf, tinymath.Inf, 1},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f_%f", c.Left, c.Right), func(t *testing.T) {
+			if tinymath.IsClose(c.Left, c.Right) != (c.Expected == 1) {
+				t.FailNow()
+			}
+		})
 	}
 }
 
@@ -907,6 +998,26 @@ func TestSign(t *testing.T) {
 		c := c
 		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
 			act := tinymath.Sign(c.Given)
+			eq(t, act, c.Expected)
+		})
+	}
+}
+
+func TestWrap(t *testing.T) {
+	t.Parallel()
+	cases := []Case{
+		{2, 2},
+		{3, 3},
+		{3.999, 3.999},
+		{4, 2},
+		{4.1, 2.1},
+		{5, 3},
+		{6.1, 2.1},
+	}
+	for _, c := range cases {
+		c := c
+		t.Run(fmt.Sprintf("%f", c.Given), func(t *testing.T) {
+			act := tinymath.Wrap(c.Given, 2, 4)
 			eq(t, act, c.Expected)
 		})
 	}

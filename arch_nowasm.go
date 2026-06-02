@@ -41,7 +41,7 @@ func Trunc(self float32) float32 {
 		return CopySign(0, self)
 	}
 
-	exponent_clamped := uint32(Max(exponent, 0))
+	exponent_clamped := uint32(max(exponent, 0))
 
 	// find the part of the fraction that would be left over
 	fractional_part := (x_bits << exponent_clamped) & MANTISSA_MASK
