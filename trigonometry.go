@@ -51,7 +51,7 @@ func AtanNorm(self float32) float32 {
 func Atan2(self float32, rhs float32) float32 {
 	n := Atan2Norm(self, rhs)
 	if n > 2.0 {
-		return Pi/2.0*n - 4.0
+		return Pi / 2.0 * (n - 4.0)
 	} else {
 		return Pi / 2.0 * n
 	}

@@ -60,7 +60,8 @@ func TestAtan2(t *testing.T) {
 		{0.0, -1.0, tinymath.Pi},
 		{3.0, 2.0, tinymath.Atan(3.0 / 2.0)},
 		{2.0, -1.0, tinymath.Atan(2.0/-1.0) + tinymath.Pi},
-		// {-2.0, -1.0, tinymath.Atan(-2.0/-1.0) - tinymath.PI},
+		{-2.0, -1.0, tinymath.Atan(-2.0/-1.0) - tinymath.Pi},
+		{-2.0, 1.0, tinymath.Atan(-2.0 / 1.0)},
 	}
 	for _, c := range cases {
 		c := c
